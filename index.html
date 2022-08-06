@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flashtag - {{ .Name }}</title>
+    <link rel="shortcut icon" href="assets/logo.png" type="image/x-icon">
+    <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+    <div class="main">
+        <div class="images">
+            <img src="{{ .Cover }}" alt="{{ .Name }} cover image" class="cover" id="cover"/>
+            <img src="{{ .Avatar }}" alt="{{ .Name }} avatar image" class="avatar" />
+        </div>
+        <div id="visit" style="position: absolute;">Visite: {{ .Visits }}</div>
+        <div class="name">
+            <h2>{{ .Name }}</h2>
+        </div>
+        <div class="bio">
+            <h3>{{ .Bio }}</h3>
+        </div>
+        {{ if .Number }}
+        <div class="email" onclick="generateVCard();">
+            <div
+                style="padding: 0.5rem; color: white; background-color: gray; margin-bottom: 2rem; border-radius: 10px; margin-top: 1rem;">
+                Salva il contatto</div>
+        </div>
+        {{ end }}
+
+        <div class="links">
+            {{ range .Links }}
+            {{ if eq .Type "EMAIL" }}
+            <div class="link" onclick="window.location.href='mailto:{{ .Value }}'">
+                <img src="assets/{{ .Icon }}" alt="{{ .Type }}" width="70%" id="cover" />
+                <span>{{ .Type }}</span>
+            </div>
+            {{ end }}
+            {{ if and (ne .Type "PHONE") (ne .Type "EMAIL") (ne .Type "PHONE2")  (ne .Type "NAME")}}
+            <div class="link" onclick="window.open('{{ .Prefix }}{{ .Value }}', '_blank').focus();">
+                <img src="assets/{{ .Icon }}" width="70%"/>
+                <span>{{ .Type }}</span>
+            </div>
+            {{ end }}
+            {{ end }}
+        </div>
+        <div id="vcard" style="display: none;"></div>
+    </div>
+    {{ if .Number }}
+    <script type="module">
+        import VCard from "https://cdn.skypack.dev/vcard-creator"
+        var myVCard = new VCard();
+        myVCard.addName("{{ .Name }}");
+        myVCard.addEmail("{{ .Email }}");
+        myVCard.addPhoneNumber("{{ .Number }}", 'WORK')
+        {{ if .Number2 }}
+        myVCard.addPhoneNumber("{{ .Number2 }}", 'HOME')
+        {{ end }}
+        document.getElementById("vcard").value = myVCard.toString();
+    </script>
+    {{ end }}
+    <script>
+        document.getElementById("visit").style.left = document.getElementById('cover').offsetLeft + 10 + "px";
+        document.getElementById("visit").style.top = document.getElementById('cover').offsetHeight + 20 + "px";
+        function generateVCard() {
+            var a = window.document.createElement('a');
+            a.href = window.URL.createObjectURL(new Blob([document.getElementById("vcard").value], { type: 'text/plain' }));
+            a.download = '{{ .Name }}.vcf';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+    </script>
+</body>
+</html>
