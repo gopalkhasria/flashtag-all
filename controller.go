@@ -25,6 +25,8 @@ type PageData struct {
 	Number  string `json:"number"`
 	Number2 string `json:"number2"`
 	Bio     string `json:"bio"`
+	Show    string `json:"show"`
+	Color   string `json:"color"`
 }
 
 type Link struct {
@@ -51,9 +53,15 @@ func Serve(w http.ResponseWriter, r *http.Request) {
 			log.Println(err)
 			return
 		}
-		docID = doc.Ref.ID
-		tmp := doc.Data()["links"]
+		tmp := doc.Data()["public"]
 		tmpStr := fmt.Sprintf("%v", tmp)
+		if tmpStr == "false" {
+			http.ServeFile(w, r, "private.html")
+			return
+		}
+		docID = doc.Ref.ID
+		tmp = doc.Data()["links"]
+		tmpStr = fmt.Sprintf("%v", tmp)
 		err = json.Unmarshal([]byte(tmpStr), &data.Links)
 		if err != nil {
 			log.Println(err)
@@ -72,6 +80,13 @@ func Serve(w http.ResponseWriter, r *http.Request) {
 		tmpStr = fmt.Sprintf("%v", doc.Data()["visits"])
 		visit, _ := strconv.Atoi(tmpStr)
 		data.Visits = visit
+
+		tmpStr = fmt.Sprintf("%v", doc.Data()["show"])
+		data.Show = tmpStr
+
+		tmpStr = fmt.Sprintf("%v", doc.Data()["color"])
+		data.Color = tmpStr
+		data.Color = data.Color[2:]
 	}
 	for _, l := range data.Links {
 		if l.Type == "EMAIL" {
@@ -104,6 +119,14 @@ func Serve(w http.ResponseWriter, r *http.Request) {
 		Client.Collection("users").Doc(docID).Update(context.Background(), update)
 
 	}
+	if data.Show == "false" {
+		http.Redirect(w, r, data.Links[0].Prefix+data.Links[0].Value, http.StatusTemporaryRedirect)
+		return
+	}
 	t := template.Must(template.ParseFiles("index.html"))
-	t.Execute(w, data)
+	err = t.Execute(w, data)
+	if err != nil {
+		log.Println(err)
+	}
+
 }

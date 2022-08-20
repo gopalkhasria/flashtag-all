@@ -7,6 +7,11 @@
     <title>Flashtag - {{ .Name }}</title>
     <link rel="shortcut icon" href="assets/logo.png" type="image/x-icon">
     <link rel="stylesheet" href="assets/style.css">
+    <style>
+        .main{
+            background-color: #{{ .Color }};
+        }
+    </style>
 </head>
 <body>
     <div class="main">
@@ -65,7 +70,7 @@
         document.getElementById("visit").style.top = document.getElementById('cover').offsetHeight + 20 + "px";
         function generateVCard() {
             var a = window.document.createElement('a');
-            a.href = window.URL.createObjectURL(new Blob([document.getElementById("vcard").value], { type: 'text/plain' }));
+            a.href = window.URL.createObjectURL(new Blob([document.getElementById("vcard").value], { type: 'text/x-vcard' }));
             a.download = '{{ .Name }}.vcf';
             document.body.appendChild(a);
             a.click();

@@ -38,6 +38,7 @@ body{
     width: 40%;
     max-width: 140px;
     max-height: 140px;
+    min-height: 140px;
     position: relative;
     top: -70px;
     left: 30%;
@@ -66,4 +67,9 @@ body{
 .link > img{
     margin-bottom: .5rem;
     width: 110px;
+}
+
+.bio{
+    text-align: center;
+    padding: 1rem;
 }
