@@ -59,6 +59,7 @@
         myVCard.addName("{{ .Name }}");
         myVCard.addEmail("{{ .Email }}");
         myVCard.addPhoneNumber("{{ .Number }}", 'WORK')
+        myVCard.addUrl(window.location.href)
         {{ if .Number2 }}
         myVCard.addPhoneNumber("{{ .Number2 }}", 'HOME')
         {{ end }}
