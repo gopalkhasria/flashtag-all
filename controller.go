@@ -40,8 +40,8 @@ func Serve(w http.ResponseWriter, r *http.Request) {
 	var data PageData
 	name := mux.Vars(r)["name"]
 	data.Name = name
-	data.Cover = "assets/background.jpeg"
-	data.Avatar = "assets/avatar.png"
+	data.Cover = "https://ftp.flashtag.it/background.jpeg"
+	data.Avatar = "https://ftp.flashtag.it/avatar.png"
 	docID := ""
 	iter := Client.Collection("users").Where("name", "==", name).Documents(context.Background())
 	for {
@@ -87,6 +87,10 @@ func Serve(w http.ResponseWriter, r *http.Request) {
 		tmpStr = fmt.Sprintf("%v", doc.Data()["color"])
 		data.Color = tmpStr
 		data.Color = data.Color[2:]
+	}
+	if len(data.Links) == 0 {
+		http.ServeFile(w, r, "404.html")
+		return
 	}
 	for _, l := range data.Links {
 		if l.Type == "EMAIL" {

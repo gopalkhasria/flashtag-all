@@ -17,7 +17,7 @@ func main() {
 	r.PathPrefix("/assets").Handler(http.StripPrefix("/assets", fileServer))
 	r.HandleFunc("/{name}", Serve)
 	r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		http.Redirect(w, r, "https://fffcccc.my.canva.site/", http.StatusTemporaryRedirect)
+		http.Redirect(w, r, "https://flashtag.site/", http.StatusTemporaryRedirect)
 	})
 	http.ListenAndServe(":8080", r)
 }

@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flashtag - {{ .Name }}</title>
-    <link rel="shortcut icon" href="assets/logo.png" type="image/x-icon">
+    <link rel="shortcut icon" href="https://ftp.flashtag.it/logo.png" type="image/x-icon">
     <link rel="stylesheet" href="assets/style.css">
     <style>
         .main{
@@ -21,7 +21,7 @@
         </div>
         <div id="visit" style="position: absolute;">Visite: {{ .Visits }}</div>
         <div class="name">
-            <h2>{{ .Name }}</h2>
+            <h1>{{ .Name }}</h1>
         </div>
         <div class="bio">
             <h3>{{ .Bio }}</h3>
@@ -29,7 +29,7 @@
         {{ if .Number }}
         <div class="email" onclick="generateVCard();">
             <div
-                style="padding: 0.5rem; color: white; background-color: gray; margin-bottom: 2rem; border-radius: 10px; margin-top: 1rem;">
+                style="padding: 0.5rem; color: white; background-color: red; margin-bottom: 2rem; border-radius: 10px; margin-top: 1rem;">
                 Salva il contatto</div>
         </div>
         {{ end }}
@@ -38,13 +38,13 @@
             {{ range .Links }}
             {{ if eq .Type "EMAIL" }}
             <div class="link" onclick="window.location.href='mailto:{{ .Value }}'">
-                <img src="assets/{{ .Icon }}" alt="{{ .Type }}" width="70%" id="cover" />
+                <img src="https://ftp.flashtag.it/{{ .Icon }}" alt="{{ .Type }}" width="70%" id="cover" />
                 <span>{{ .Type }}</span>
             </div>
             {{ end }}
             {{ if and (ne .Type "PHONE") (ne .Type "EMAIL") (ne .Type "PHONE2")  (ne .Type "NAME")}}
             <div class="link" onclick="window.open('{{ .Prefix }}{{ .Value }}', '_blank').focus();">
-                <img src="assets/{{ .Icon }}" width="70%"/>
+                <img src="https://ftp.flashtag.it/{{ .Icon }}" width="70%"/>
                 <span>{{ .Type }}</span>
             </div>
             {{ end }}
