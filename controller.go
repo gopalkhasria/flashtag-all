@@ -15,18 +15,19 @@ import (
 )
 
 type PageData struct {
-	Name    string `json:"name"`
-	Cover   string `json:"cover"`
-	Avatar  string `json:"avatar"`
-	Links   []Link `json:"links"`
-	Public  bool   `json:"public"`
-	Visits  int    `json:"visits"`
-	Email   string `json:"email"`
-	Number  string `json:"number"`
-	Number2 string `json:"number2"`
-	Bio     string `json:"bio"`
-	Show    string `json:"show"`
-	Color   string `json:"color"`
+	Name     string `json:"name"`
+	Cover    string `json:"cover"`
+	Avatar   string `json:"avatar"`
+	Links    []Link `json:"links"`
+	Public   bool   `json:"public"`
+	Visits   int    `json:"visits"`
+	Email    string `json:"email"`
+	Number   string `json:"number"`
+	Number2  string `json:"number2"`
+	Bio      string `json:"bio"`
+	Show     string `json:"show"`
+	Color    string `json:"color"`
+	Username string `json:"username"`
 }
 
 type Link struct {
@@ -43,6 +44,7 @@ func Serve(w http.ResponseWriter, r *http.Request) {
 	data.Cover = "https://ftp.flashtag.it/background.jpeg"
 	data.Avatar = "https://ftp.flashtag.it/avatar.png"
 	docID := ""
+	data.Username = name
 	iter := Client.Collection("users").Where("name", "==", name).Documents(context.Background())
 	for {
 		doc, err := iter.Next()
